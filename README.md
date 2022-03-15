@@ -11,7 +11,7 @@
  - [Postman](https://www.postman.com/) - API Development Environment
 
 ## How to run the application
-1. Checkout this code
+1. Checkout this code `git clone git@github.com:bojan12345/sentence-search.git`
 2. In console run `mvn clean install`
 3. Setup and run in your IDE locally
 4. App will start on port `8080`
