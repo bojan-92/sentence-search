@@ -5,18 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.project44.sentsearch.controller.dto.SearchSentenceResponse;
 import com.project44.sentsearch.controller.dto.SentenceDTO;
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
 import java.util.Objects;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -37,28 +29,18 @@ public class SentenceControllerIntegrationTests {
   @Autowired
   private TestRestTemplate restTemplate;
 
-  @Value("${sentences.file.name}")
-  private String fileName;
-
-  private List<String> sentences;
-
-  @BeforeEach
-  void setUp(){
-    ClassLoader classLoader = this.getClass().getClassLoader();
-    File file = new File(Objects.requireNonNull(classLoader.getResource("files/" + fileName)).getFile());
-    try {
-      sentences = Files.readAllLines(Paths.get(file.getPath()),
-          StandardCharsets.UTF_8);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  @Test
+  void searchApiShouldReturnOneSentence() {
+    assertEquals(this.restTemplate
+        .getForObject("http://localhost:" + port + "/count?word=eggplant", SearchSentenceResponse.class)
+        .getSentences().size(), 1);
   }
 
   @Test
-  void searchApiShouldReturnTwoSentence() {
+  void searchApiShouldReturnZeroSentences() {
     assertEquals(this.restTemplate
-        .getForObject("http://localhost:" + port + "/count?word=eggplant", SearchSentenceResponse.class)
-        .getSentences().size(), sentences.size());
+        .getForObject("http://localhost:" + port + "/count?word=egg", SearchSentenceResponse.class)
+        .getSentences().size(), 0);
   }
 
   @Test
