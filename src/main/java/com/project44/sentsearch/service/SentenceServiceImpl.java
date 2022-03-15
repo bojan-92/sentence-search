@@ -32,8 +32,10 @@ public class SentenceServiceImpl implements SentenceService {
     for (String sentence : fileSentences) {
       String[] sentenceWords = sentence.split("\\s+");
       int count = countWordAppearance(word, sentenceWords);
-      SentenceDTO sentenceDTO = SentenceDTO.builder().sentence(sentence).count(count).build();
-      sentences.add(sentenceDTO);
+      if (count > 0) {
+        SentenceDTO sentenceDTO = SentenceDTO.builder().sentence(sentence).count(count).build();
+        sentences.add(sentenceDTO);
+      }
     }
     sentences.sort(Comparator.comparing(SentenceDTO::getCount).reversed());
 

@@ -34,7 +34,7 @@ public class SentenceServiceTests {
   }
 
   @Test
-  void searchTestOneSentence() {
+  void searchTestOneSentences() {
     List<SentenceDTO> sentenceDTOS = new ArrayList<>();
     sentenceDTOS.add(SentenceDTO.builder().sentence("Test is important for testing test!").count(2).build());
     SearchSentenceResponse response = SearchSentenceResponse.builder().sentences(sentenceDTOS).word("test").build();
@@ -44,7 +44,7 @@ public class SentenceServiceTests {
   }
 
   @Test
-  void searchTestTwoSentence() {
+  void searchTestTwoSentences() {
     List<SentenceDTO> sentenceDTOS = new ArrayList<>();
     sentenceDTOS.add(SentenceDTO.builder().sentence("Test is important for testing test!").count(2).build());
     sentenceDTOS.add(SentenceDTO.builder().sentence("Test is important!").count(1).build());
@@ -52,6 +52,15 @@ public class SentenceServiceTests {
 
     Mockito.when(sentenceService.search("test")).thenReturn(response);
     Assertions.assertEquals(sentenceService.search("test").getSentences().size(), 2);
+  }
+
+  @Test
+  void searchTestZeroSentences() {
+    List<SentenceDTO> sentenceDTOS = new ArrayList<>();
+    SearchSentenceResponse response = SearchSentenceResponse.builder().sentences(sentenceDTOS).word("test").build();
+
+    Mockito.when(sentenceService.search("test")).thenReturn(response);
+    Assertions.assertEquals(sentenceService.search("test").getSentences().size(), 0);
   }
 
 }
