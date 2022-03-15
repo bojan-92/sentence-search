@@ -7,7 +7,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class SentenceServiceImpl implements SentenceService {
 
   @Override
   public SearchSentenceResponse search(String word) {
-    List<String> fileSentences = readFileSentences();
+    List<String> fileSentences = readFile();
     List<SentenceDTO> sentences = new ArrayList<>();
 
     for (String sentence : fileSentences) {
@@ -41,7 +40,7 @@ public class SentenceServiceImpl implements SentenceService {
     return SearchSentenceResponse.builder().sentences(sentences).word(word).build();
   }
 
-  private List<String> readFileSentences() {
+  private List<String> readFile() {
     List<String> list = new ArrayList<>();
     Resource fileResource = resourceLoader.getResource("classpath:/files/" + fileName);
     try {
