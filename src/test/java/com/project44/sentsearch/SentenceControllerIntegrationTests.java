@@ -87,4 +87,12 @@ public class SentenceControllerIntegrationTests {
     }
   }
 
+  @Test
+  void searchApiShouldReturnDecreasingCountOrder() {
+    ResponseEntity<SearchSentenceResponse> responseEntity = this.restTemplate
+        .getForEntity("http://localhost:" + port + "/count?word=test", SearchSentenceResponse.class);
+
+    assertEquals(Objects.requireNonNull(responseEntity.getBody()).getSentences().get(0).getCount(), 2);
+  }
+
 }
